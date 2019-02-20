@@ -7,12 +7,10 @@ int PUMP = 7; //Pump control output. Active high.
 int UP = 9;   //Up bttn input pullup
 int DWN = 8;  //Down bttn input pullup
 
-//long WaitDuration = (120 * 60000); //How long apart (in minutes) to water
-long WaitDuration = (10000);
+long WaitDuration = (120 * 60000); //How long apart (in minutes) to water
 int WaterMultiplier = 1; //Multiplier for watering times. Adjust for amount of water needed
 bool PumpActive = 1; // Is the pump active? 
-//int PumpDuration = (60 * 1000);//in seconds, 60 seconds is aproximately 100ml. 500ml/day is the aproximate use for a plant
-int PumpDuration = (1000);
+int PumpDuration = (60 * 1000);//in seconds per bar, 60 seconds is aproximately 100ml. 500ml/day is the aproximate use for a plant
 
 unsigned long PreviousMillis = 0;
 unsigned long PrevMillisDisp = 0;
@@ -63,6 +61,8 @@ void loop() {
   
   unsigned long CurrentMillis = millis();
 
+  
+
   if (digitalRead(UP) == LOW) {
     TimeUp();
   }
@@ -77,7 +77,7 @@ void loop() {
     Serial.print("Pump on \n");
   }
     
-    if (CurrentMillis - PreviousMillis >= PumpDuration) {
+    if (CurrentMillis - PreviousMillis >= PumpDuration * DISP) {
       PreviousMillis = CurrentMillis;
       PumpActive = 0;
       digitalWrite(PUMP, LOW);
